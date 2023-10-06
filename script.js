@@ -1,10 +1,8 @@
-let isParams = false;
 
-for (let i = 0; i < window.location.href.length; i++) {
-    if (window.location.href[i] == "?") {
-        isParams = true;
-    }
-}
+const queryString = window.location.search;
+
+const urlParams = new URLSearchParams(queryString);
+
 
 const now = new Date();
 let currentHollidays;
@@ -33,22 +31,9 @@ do {
 } while (now > currentHollidays);
 
 // Check if a date is provided in the URL
-if (isParams) {
-    const paramsDate = window.location.href.split("?")[1];
-    let isHours = false;
-
-    for (let i = 0; i < paramsDate.length; i++) {
-        if (paramsDate[i] == "&") {
-            isHours = true;
-        }
-    }
-
-    if (isHours) {
-        currentHollidays = new Date([
-            paramsDate.split("&")[0],
-            paramsDate.split("&")[1],
-        ]);
-    } else {
+if (!!urlParams) {
+    const paramsDate = urlParams.get("date");
+    if (paramsDate) {
         currentHollidays = new Date([paramsDate, "00:00:00"]);
     }
 }
